@@ -41,11 +41,13 @@ public class MCEFSettings {
     private boolean skipDownload;
     private String downloadMirror;
     private String userAgent;
+    private String jcefCommitBypass;
 
     public MCEFSettings() {
         skipDownload = false;
         downloadMirror = "https://mcef-download.cinemamod.com";
         userAgent = null;
+        jcefCommitBypass = null;
     }
 
     public boolean isSkipDownload() {
@@ -69,6 +71,8 @@ public class MCEFSettings {
     public String getUserAgent() {
         return userAgent;
     }
+
+    public String getManualJcefCommit(){return jcefCommitBypass;}
 
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
@@ -98,6 +102,7 @@ public class MCEFSettings {
         properties.setProperty("skip-download", String.valueOf(skipDownload));
         properties.setProperty("download-mirror", String.valueOf(downloadMirror));
         properties.setProperty("user-agent", String.valueOf(userAgent));
+        properties.setProperty("jcef-commit", String.valueOf(jcefCommitBypass));
 
         try (FileOutputStream output = new FileOutputStream(file)) {
             properties.store(output, null);
@@ -121,6 +126,7 @@ public class MCEFSettings {
             skipDownload = Boolean.parseBoolean(properties.getProperty("skip-download"));
             downloadMirror = properties.getProperty("download-mirror");
             userAgent = properties.getProperty("user-agent");
+            jcefCommitBypass = properties.getProperty("jcef-commit");
         } catch (Exception e) {
             // Delete and re-create the file if there was a parsing error
             if (deleteRetries++ > 20)

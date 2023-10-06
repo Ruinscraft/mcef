@@ -129,7 +129,8 @@ public final class MCEF {
             return parts[0].replace("+", "");
         }
 
-        return null;
+        // Return the config value in case mod fails to get the JCEF Commit (should be null by default)
+        return getSettings().getManualJcefCommit();
     }
 
     private static final HashMap<CefCursorType, Long> CEF_TO_GLFW_CURSORS = new HashMap<>();
