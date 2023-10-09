@@ -109,6 +109,18 @@ java {
 }
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes(['Specification-Title'     : mod_name,
+                    'Specification-Vendor'    : mod_vendor,
+                    'Specification-Version'   : "1",
+                    'Implementation-Title'    : mod_name,
+                    'Implementation-Version'  : mod_version,
+                    'Implementation-Vendor'   : mod_vendor,
+                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                    'JCEF-Commit-Hash'        : project.parent.getCheckedOutGitCommitHash(project.parent)
+        ])
+    }
     from('LICENSE') {
         rename { "${it}_${archivesBaseName}" }
     }

@@ -125,7 +125,8 @@ jar {
                     'Implementation-Title'    : mod_name,
                     'Implementation-Version'  : mod_version,
                     'Implementation-Vendor'   : mod_vendor,
-                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                    'JCEF-Commit-Hash'        : project.parent.getCheckedOutGitCommitHash(project.parent)
         ])
     }
     from configurations.shadow.collect { it.isDirectory() ? it : zipTree(it) }

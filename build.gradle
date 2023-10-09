@@ -2,16 +2,35 @@ plugins {
     id 'fabric-loom' version "${fabric_loom_version}" apply false
 }
 
-task cloneJcef(type: Exec) {
+tasks.register('cloneJcef', Exec) {
     commandLine 'git', 'submodule', 'update', '--init', '--recursive', 'common/java-cef'
 }
 
-task publishMaven(type: GradleBuild) {
+// https://gist.github.com/JonasGroeger/7620911
+def getCheckedOutGitCommitHash(Project mcefParent) {
+    def gitFolder = "$mcefParent.projectDir/.git/modules/common/java-cef/"
+    def takeFromHash = 40
+    /*
+     * '.git/HEAD' contains either
+     *      in case of detached head: the currently checked out commit hash
+     *      otherwise: a reference to a file containing the current commit hash
+     */
+    def head = new File(gitFolder + "HEAD").text.split(":") // .git/HEAD
+    def isCommit = head.length == 1 // e5a7c79edabbf7dd39888442df081b1c9d8e88fd
+    // def isRef = head.length > 1     // ref: refs/heads/master
+
+    if (isCommit) return head[0].trim().take(takeFromHash) // e5a7c79edabb
+
+    def refHead = new File(gitFolder + head[1].trim()) // .git/refs/heads/master
+    refHead.text.trim().take takeFromHash
+}
+
+tasks.register('publishMaven', GradleBuild) {
     group = 'mcef'
     tasks = [
-            ':common:publish',
-            ':fabric:publish',
-            ':forge:publish'
+          ':common:publish',
+          ':fabric:publish',
+          ':forge:publish'
     ]
 }
 
@@ -26,39 +45,39 @@ task publishMaven(type: GradleBuild) {
 //    ]
 //}
 
-task fabricClient(type: GradleBuild) {
+tasks.register('fabricClient', GradleBuild) {
     group = 'mcef'
     tasks = [
-            ':fabric:runClient'
+          ':fabric:runClient'
     ]
 }
 
-task forgeClient(type: GradleBuild) {
+tasks.register('forgeClient', GradleBuild) {
     group = 'mcef'
     tasks = [
-            ':forge:runClient'
+          ':forge:runClient'
     ]
 }
 
-task fabricServer(type: GradleBuild) {
+tasks.register('fabricServer', GradleBuild) {
     group = 'mcef'
     tasks = [
-            ':fabric:runServer'
+          ':fabric:runServer'
     ]
 }
 
-task forgeServer(type: GradleBuild) {
+tasks.register('forgeServer', GradleBuild) {
     group = 'mcef'
     tasks = [
-            ':forge:runServer'
+          ':forge:runServer'
     ]
 }
 
-task cleanAll(type: GradleBuild) {
+tasks.register('cleanAll', GradleBuild) {
     group = 'mcef'
     tasks = [
-            ':common:clean',
-            ':fabric:clean',
-            ':forge:clean',
+          ':common:clean',
+          ':fabric:clean',
+          ':forge:clean',
     ]
 }
