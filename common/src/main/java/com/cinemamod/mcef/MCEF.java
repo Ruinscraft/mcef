@@ -24,8 +24,8 @@ import org.cef.misc.CefCursorType;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Properties;
+import java.net.URL;
+import java.util.*;
 
 /**
  * An API to create Chromium web browsers in Minecraft. Uses
@@ -107,14 +107,31 @@ public final class MCEF {
 
     public static String getJavaCefCommit() throws IOException {
         // Try to get from resources (if loading from a jar)
-        InputStream inputStream = MCEF.class.getClassLoader().getResourceAsStream("META-INF/MANIFEST.MF");
-        Properties properties = new Properties();
-        try {
-            properties.load(inputStream);
-            if (properties.containsKey("java-cef-commit")) {
-                return properties.getProperty("java-cef-commit");
+
+        Enumeration<URL> resources = MCEF.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+        Map<String, String> commits = new HashMap<>(1);
+        resources.asIterator().forEachRemaining(resource -> {
+            Properties properties = new Properties();
+            try {
+                properties.load(resource.openStream());
+                if (properties.containsKey("java-cef-commit")) {
+                    commits.put(resource.getFile() , properties.getProperty("java-cef-commit"));
+                }
+            } catch (IOException e) {
+                System.err.println("Failed to get hash");
+                System.err.println(e);
+                e.printStackTrace();
             }
-        } catch (IOException ignored) {
+        });
+
+        if(commits.size() == 1){
+            System.out.println("one commit found using");
+            return commits.get(commits.keySet().stream().toList().get(0));
+        } else if (commits.size() >= 2){
+            System.out.println("multiple values found");
+            commits.forEach((v1, v2) ->{
+                System.out.println(v1 + "  :  " + v2);
+            });
         }
 
         // Try to get from the git submodule (if loading from development environment)
