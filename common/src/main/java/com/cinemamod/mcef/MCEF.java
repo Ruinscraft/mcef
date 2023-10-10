@@ -125,7 +125,6 @@ public final class MCEF {
         });
 
         if(commits.size() == 1){
-            System.out.println("one commit found using");
             return commits.get(commits.keySet().stream().toList().get(0));
         } else if (commits.size() >= 2){
             System.out.println("multiple values found");
@@ -146,8 +145,20 @@ public final class MCEF {
             return parts[0].replace("+", "");
         }
 
-        // Return the config value in case mod fails to get the JCEF Commit (should be null by default)
-        return getSettings().getManualJcefCommit();
+        /*
+            Use a value manually set by the user in the event getting the Jcef commit fails. This option is useful as a workaround for these types of errors.
+            Put -Dmcef.jcefcommit=<commit> in your JVM Args to use this value.
+            Replace <commit> with the full commit SHA from the most recent commit in https://github.com/CinemaMod/java-cef/commits/master
+         */
+        if(System.getProperty("mcef.jcefcommit") != null){
+            return System.getProperty("mcef.jcefcommit");
+        }
+
+        /*
+            If the mod for whatever reason fails to get the JCEF Commit, and the bypass value isn't set, throw a IOException instead of returning null.
+            In every instance this method returns null, some sort of exception would occur. Causing minecraft to crash.
+        */
+        throw new IOException("Failed to get JCEF Commit");
     }
 
     private static final HashMap<CefCursorType, Long> CEF_TO_GLFW_CURSORS = new HashMap<>();
