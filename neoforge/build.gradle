@@ -1,6 +1,5 @@
 plugins {
-    id 'net.neoforged.gradle' version '6.0.+'
-    id "org.spongepowered.mixin" version "0.7.+"
+    id 'net.neoforged.gradle.userdev' version '7.0.+'
     id 'com.matthewprenger.cursegradle' version "${cursegradle_version}"
     id 'com.github.johnrengelman.shadow' version "${shadow_version}"
     id 'maven-publish'
@@ -14,25 +13,13 @@ group = mod_packagename
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(java_version as int)
 
-minecraft {
-    mappings channel: 'official', version: minecraft_version
-
-    runs {
-        client {
-            workingDirectory project.file('run')
-            property 'forge.logging.console.level', 'debug'
-        }
-        server {
-            workingDirectory project.file('run/server')
-            property 'forge.logging.console.level', 'debug'
-            arg '--nogui'
-        }
+runs {
+    client {
+        workingDirectory project.file('run')
     }
-}
-
-mixin {
-    add sourceSets.main, 'mcef.refmap.json'
-    config 'mcef.mixins.json'
+    server {
+        workingDirectory project.file('run/server')
+    }
 }
 
 /*
@@ -74,13 +61,11 @@ tasks.register('prepareWorkspace') {
 }
 
 dependencies {
-    minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
+    implementation "net.neoforged:neoforge:${neoforge_version}"
 
     implementation(project(':common')) {
         transitive false
     }
-
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 tasks.register('generateJava', Copy) {
@@ -98,8 +83,9 @@ processResources {
         expand 'mod_id': mod_id,
                 'mod_version': mod_version,
                 'mod_name': mod_name,
-                'forge_loader_requirement': forge_loader_requirement,
-                'forge_requirement': forge_requirement,
+                'neoforge_version': neoforge_version,
+                'loader_version': loader_version,
+                'neoforge_dependency': 'neoforge_dependency',
                 'minecraft_version': minecraft_version
     }
     from("${project(':common').projectDir}/src/main/resources")
@@ -130,38 +116,21 @@ jar {
     from configurations.shadow.collect { it.isDirectory() ? it : zipTree(it) }
 }
 
-tasks.register('deobfJar', Jar) {
-    archiveClassifier = 'deobf'
-    from sourceSets.main.output
-}
-
 curseforge {
     apiKey = file("${rootDir}/curseforge_api_key.txt").exists() ? file("${rootDir}/curseforge_api_key.txt").text : ''
     project {
         id = curse_id
         releaseType = release_type
         addGameVersion minecraft_version
-        addGameVersion 'Forge'
         addGameVersion 'NeoForge'
         addGameVersion "Java ${java_version}"
         mainArtifact(jar) {
-            displayName = "[FORGE][${minecraft_version}] ${mod_name} ${mod_version}"
+            displayName = "[NEOFORGE][${minecraft_version}] ${mod_name} ${mod_version}"
         }
     }
 }
 
-jar.finalizedBy('reobfJar')
-
 shadowJar {
     configurations = [project.configurations.shadowMc]
     archiveClassifier = ''
-}
-shadowJar.dependsOn('reobfJar')
-
-reobf {
-    shadowJar {}
-}
-
-artifacts {
-    archives deobfJar
 }

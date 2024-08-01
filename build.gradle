@@ -57,7 +57,7 @@ tasks.register('fabricClient', GradleBuild) {
     ]
 }
 
-tasks.register('forgeClient', GradleBuild) {
+tasks.register('neoforgeClient', GradleBuild) {
     group = 'mcef'
     tasks = [
           ':neoforge:runClient'
@@ -71,7 +71,7 @@ tasks.register('fabricServer', GradleBuild) {
     ]
 }
 
-tasks.register('forgeServer', GradleBuild) {
+tasks.register('neoforgeServer', GradleBuild) {
     group = 'mcef'
     tasks = [
           ':neoforge:runServer'

@@ -53,7 +53,7 @@ public class CefDownloadMixin {
 
         // Check for development environment
         // TODO: handle eclipse/others
-        // i.e. mcef-repo/forge/build
+        // i.e. mcef-repo/neoforge/build
         File buildDir = new File("../build");
         if (buildDir.exists() && buildDir.isDirectory()) {
             mcefLibrariesDir = new File(buildDir, "mcef-libraries/");

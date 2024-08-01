@@ -65,7 +65,7 @@ public class ModScheme implements CefResourceHandler {
             return false;
         }
 
-        // TODO: this may or may not require forge/fabric specific code?
+        // TODO: this may or may not require neoforge/fabric specific code?
 //        is = ModList.get().getModContainerById(mod).get().getMod().getClass().getResourceAsStream("/assets/" + mod.toLowerCase(Locale.US) + "/html/" + loc.toLowerCase());
         is = ModScheme.class.getClassLoader().getResourceAsStream("/assets/" + mod.toLowerCase(Locale.US) + "/html/" + loc.toLowerCase(Locale.US));
         if (is == null) {

@@ -25,7 +25,7 @@ Current Chromium version: `116.0.5845.190`
 ## For Players
 This is the source code for MCEF.
 
-Download the mod for Fabric or Forge on either:
+Download the mod for Fabric or NeoForge on either:
 - CurseForge: https://www.curseforge.com/minecraft/mc-mods/mcef
 - Modrinth: https://modrinth.com/mod/mcef
 
@@ -57,13 +57,13 @@ See the [mcef-fabric-example-mod](https://github.com/CinemaMod/mcef-fabric-examp
 ```
 dependencies {
     compileOnly fg.deobf('com.cinemamod:mcef:2.1.4-1.20.1')
-    runtimeOnly fg.deobf('com.cinemamod:mcef-forge:2.1.4-1.20.1')
+    runtimeOnly fg.deobf('com.cinemamod:mcef-neoforge:2.1.4-1.20.1')
 }
 ```
 ### Building & Modifying MCEF
 After cloning this repo, you will need to clone the java-cef git submodule. There is a gradle task for this: `./gradlew cloneJcef`.
 
 To run the Fabric client: `./gradlew fabricClient`
-To run the Forge client: `./gradlew forgeClient`
+To run the NeoForge client: `./gradlew neoforgeClient`
 
 In-game, there is a demo browser if you press F10 after you're loaded into a world (the demo browser only exists when you're running from a development environment).
