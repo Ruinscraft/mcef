@@ -117,7 +117,7 @@ jar {
 }
 
 curseforge {
-    apiKey = file("${rootDir}/curseforge_api_key.txt").exists() ? file("${rootDir}/curseforge_api_key.txt").text : ''
+    apiKey = file("${rootDir}/curseforge_api_key.txt").exists() ? file("${rootDir}/curseforge_api_key.txt").text.trim() : ''
     project {
         id = curse_id
         releaseType = release_type
