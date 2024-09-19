@@ -9,7 +9,8 @@
   "client": [
     "CefDownloadMixin",
     "CefInitMixin",
-    "CefRenderUpdateMixin"
+    "CefRenderUpdateMixin",
+    "CefShutdownMixin"
   ],
   "injectors": {
     "defaultRequire": 1
