@@ -32,6 +32,8 @@ import org.cef.event.CefMouseEvent;
 import org.cef.event.CefMouseWheelEvent;
 import org.cef.misc.CefCursorType;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.system.libc.LibCString;
 
 import java.awt.*;
 import java.nio.ByteBuffer;
@@ -142,7 +144,7 @@ public class MCEFBrowser extends CefBrowserOsr {
     public void onPopupSize(CefBrowser browser, Rectangle size) {
         super.onPopupSize(browser, size);
         popupSize = size;
-        this.popupGraphics = ByteBuffer.allocateDirect(
+        this.popupGraphics = MemoryUtil.memAlloc(
                 size.width * size.height * 4
         );
     }
@@ -173,17 +175,19 @@ public class MCEFBrowser extends CefBrowserOsr {
      * @param height    the height of the browser
      */
     public static void store(ByteBuffer srcBuffer, ByteBuffer dstBuffer, Rectangle dirty, int width, int height) {
-        int capacity = srcBuffer.capacity();
-        for (int y = dirty.y; y < dirty.height + dirty.y; y++) {
-            int v = (y * width + dirty.x) * 4;
-            dstBuffer.position(v);
-            srcBuffer.position(v);
-            srcBuffer.limit(dirty.width * 4 + v);
-            dstBuffer.put(srcBuffer);
-            srcBuffer.limit(capacity);
+        long srcAddr = MemoryUtil.memAddress(srcBuffer);
+        long dstAddr = MemoryUtil.memAddress(dstBuffer);
+        int len = dirty.width << 2; // bit shifts are faster than muls
+        int end = dirty.height + dirty.y; // I'm assuming the java compiler will not optimize this
+        for (int y = dirty.y; y < end; y++) {
+            int v = (y * width + dirty.x) << 2;
+            // This will frequently be small, so don't call nmemcopy directly
+            MemoryUtil.memCopy(
+                    srcAddr + v,
+                    dstAddr + v,
+                    len
+            );
         }
-        srcBuffer.position(0);
-        dstBuffer.position(0).limit(dstBuffer.capacity());
     }
 
     // Graphics
@@ -191,11 +195,12 @@ public class MCEFBrowser extends CefBrowserOsr {
     public void onPaint(CefBrowser browser, boolean popup, Rectangle[] dirtyRects, ByteBuffer buffer, int width, int height) {
         if (!popup && (width != lastWidth || height != lastHeight)) {
             // Copy buffer
-            graphics = ByteBuffer.allocateDirect(buffer.capacity());
+            graphics = MemoryUtil.memAlloc(buffer.capacity());
             graphics.position(0).limit(graphics.capacity());
-            graphics.put(buffer);
-            graphics.position(0);
-            buffer.position(0);
+            long addrDst = MemoryUtil.memAddress(graphics);
+            long addrSrc = MemoryUtil.memAddress(buffer);
+            // This will almost never be small, so use nmemcpy directly to avoid some checks
+            LibCString.nmemcpy(addrDst, addrSrc, graphics.capacity());
 
             // Draw
             renderer.onPaint(buffer, width, height);

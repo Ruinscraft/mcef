@@ -73,6 +73,19 @@ tasks.register('prepareWorkspace') {
 
 }
 
+repositories {
+    exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
+    }
+}
+
 dependencies {
     minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
 
