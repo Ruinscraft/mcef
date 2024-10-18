@@ -173,13 +173,16 @@ public class MCEFBrowser extends CefBrowserOsr {
      * @param height    the height of the browser
      */
     public static void store(ByteBuffer srcBuffer, ByteBuffer dstBuffer, Rectangle dirty, int width, int height) {
+        int capacity = srcBuffer.capacity();
         for (int y = dirty.y; y < dirty.height + dirty.y; y++) {
-            dstBuffer.position((y * width + dirty.x) * 4);
-            srcBuffer.position((y * width + dirty.x) * 4);
-            srcBuffer.limit(dirty.width * 4 + (y * width + dirty.x) * 4);
+            int v = (y * width + dirty.x) * 4;
+            dstBuffer.position(v);
+            srcBuffer.position(v);
+            srcBuffer.limit(dirty.width * 4 + v);
             dstBuffer.put(srcBuffer);
-            srcBuffer.position(0).limit(srcBuffer.capacity());
+            srcBuffer.limit(capacity);
         }
+        srcBuffer.position(0);
         dstBuffer.position(0).limit(dstBuffer.capacity());
     }
 
