@@ -29,9 +29,9 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
 
 public class MCEFDownloaderMenu extends Screen {
-    private final TitleScreen menu;
+    private final Screen menu;
 
-    public MCEFDownloaderMenu(TitleScreen menu) {
+    public MCEFDownloaderMenu(Screen menu) {
         super(Component.literal("MCEF is downloading required libraries..."));
         this.menu = menu;
     }

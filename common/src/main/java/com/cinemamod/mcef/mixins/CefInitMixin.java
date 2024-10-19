@@ -96,7 +96,7 @@ public abstract class CefInitMixin {
                 // If the download is not done and didn't fail
                 else if (!MCEFDownloadListener.INSTANCE.isDone() && !MCEFDownloadListener.INSTANCE.isFailed()) {
                     MCEF.getLogger().debug("MCEF has not finished loading, displaying loading screen.");
-                    setScreen(new MCEFDownloaderMenu((TitleScreen) guiScreen));
+                    setScreen(new MCEFDownloaderMenu(guiScreen));
                     ci.cancel();
                 }
                 // If the download failed
