@@ -17,13 +17,13 @@ displayTest="NONE"
 description='''A Minecraft mod and library for adding the Chromium web browser into the game (Minecraft Chromium Embedded Framework).'''
 [[dependencies.${mod_id}]]
     modId="neoforge"
-    mandatory=true
+    required=true
     versionRange="${neoforge_dependency}"
     ordering="NONE"
     side="BOTH"
 [[dependencies.${mod_id}]]
     modId="minecraft"
-    mandatory=true
-    versionRange="[1.20.3]"
+    required=true
+    versionRange="[1.20.4]"
     ordering="NONE"
     side="BOTH"
