@@ -144,7 +144,7 @@ public class MCEFBrowser extends CefBrowserOsr {
     public void onPopupSize(CefBrowser browser, Rectangle size) {
         super.onPopupSize(browser, size);
         popupSize = size;
-        this.popupGraphics = MemoryUtil.memAlloc(
+        this.popupGraphics = ByteBuffer.allocateDirect(
                 size.width * size.height * 4
         );
     }
@@ -195,7 +195,7 @@ public class MCEFBrowser extends CefBrowserOsr {
     public void onPaint(CefBrowser browser, boolean popup, Rectangle[] dirtyRects, ByteBuffer buffer, int width, int height) {
         if (!popup && (width != lastWidth || height != lastHeight)) {
             // Copy buffer
-            graphics = MemoryUtil.memAlloc(buffer.capacity());
+            graphics = ByteBuffer.allocateDirect(buffer.capacity());
             graphics.position(0).limit(graphics.capacity());
             long addrDst = MemoryUtil.memAddress(graphics);
             long addrSrc = MemoryUtil.memAddress(buffer);
