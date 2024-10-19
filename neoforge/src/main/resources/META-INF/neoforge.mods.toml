@@ -24,6 +24,6 @@ description='''A Minecraft mod and library for adding the Chromium web browser i
 [[dependencies.${mod_id}]]
     modId="minecraft"
     required=true
-    versionRange="[1.20.4]"
+    versionRange="[1.20.6]"
     ordering="NONE"
     side="BOTH"

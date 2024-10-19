@@ -24,8 +24,8 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.TickEvent;
 import org.lwjgl.glfw.GLFW;
 
 public class MCEFExampleMod {
@@ -40,7 +40,7 @@ public class MCEFExampleMod {
         NeoForge.EVENT_BUS.addListener(this::onTick);
     }
 
-    public void onTick(TickEvent.ClientTickEvent event) {
+    public void onTick(ClientTickEvent.Post event) {
         // Check if our key was pressed and make sure the ExampleScreen isn't already open
         if (KEY_MAPPING.isDown() && !(minecraft.screen instanceof ExampleScreen)) {
             // Display the ExampleScreen web browser
