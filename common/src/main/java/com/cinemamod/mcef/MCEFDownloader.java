@@ -94,7 +94,11 @@ public class MCEFDownloader {
             if (sameContent) {
                 jcefBuildHashFileTemp.delete();
                 return true;
+            } else {
+                MCEF.getLogger().warn("JCEF Hash does not match.");
             }
+        } else {
+            MCEF.getLogger().warn("Failed to download JCEF hash.");
         }
 
         jcefBuildHashFileTemp.renameTo(jcefBuildHashFile);
@@ -178,7 +182,7 @@ public class MCEFDownloader {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            MCEF.getLogger().error("Failed to extract gzip file to " + outputDirectory, e);
         }
 
         MCEFDownloadListener.INSTANCE.setProgress(1.0f);
