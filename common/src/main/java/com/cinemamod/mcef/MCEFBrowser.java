@@ -186,24 +186,25 @@ public class MCEFBrowser extends CefBrowserOsr {
         } else {
             if (renderer.getTextureID() == 0) return;
             RenderSystem.bindTexture(renderer.getTextureID());
-            int start = 0;
-            int end = buffer.capacity();
+            int start = buffer.capacity();
+            int end = 0;
             for (Rectangle dirtyRect : dirtyRects) {
                 RenderSystem.pixelStore(GL_UNPACK_ROW_LENGTH, popupSize.width);
                 GlStateManager._pixelStore(GL_UNPACK_SKIP_PIXELS, dirtyRect.x);
                 GlStateManager._pixelStore(GL_UNPACK_SKIP_ROWS, dirtyRect.y);
                 renderer.onPaint(buffer, popupSize.x + dirtyRect.x, popupSize.y + dirtyRect.y, dirtyRect.width, dirtyRect.height);
 
-//                int rectStart = (dirtyRect.x + (dirtyRect.y * dirtyRect.width)) << 2;
-//                if (rectStart < start) start = rectStart;
-//
-//                int rectEnd = ((dirtyRect.x + dirtyRect.width) + ((dirtyRect.y + dirtyRect.height) * dirtyRect.width)) << 2;
-//                if (rectEnd > end) end = rectEnd;
+                int rectStart = (dirtyRect.x + ((dirtyRect.y) * popupSize.width)) << 2;
+                if (rectStart < start) start = rectStart;
+
+                int rectEnd = ((dirtyRect.x + dirtyRect.width) + ((dirtyRect.y + popupSize.height) * dirtyRect.width)) << 2;
+                if (rectEnd > end) end = rectEnd;
             }
+            if (start < 0) start = 0;
+            if (end > buffer.capacity()) end = buffer.capacity();
 
             if (end > start) {
                 // TODO: check if it's more performant to go for row-wise copies or if it's better to just copy the updated region
-                // also TODO: debug why uploading just the updated region likes to crash the game randomly or something?
                 if (this.popupGraphics != null) {
                     long addrFrom = MemoryUtil.memAddress(buffer);
                     long addrTo = MemoryUtil.memAddress(popupGraphics);
