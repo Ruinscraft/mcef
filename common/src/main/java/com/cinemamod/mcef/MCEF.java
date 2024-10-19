@@ -105,7 +105,7 @@ public final class MCEF {
         }
         awaitingInit.forEach(t -> t.onInit(false));
         awaitingInit.clear();
-        MCEF.getLogger().info("Could not initialize Chromium Embedded Framework");
+        MCEF.getLogger().error("Could not initialize Chromium Embedded Framework");
         shutdown();
         return false;
     }
