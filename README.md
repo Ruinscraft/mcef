@@ -47,8 +47,8 @@ repositories {
 #### Fabric
 ```
 dependencies {
-    modCompileOnly 'com.cinemamod:mcef:2.1.5-1.21.1'
-    modRuntimeOnly 'com.cinemamod:mcef-fabric:2.1.5-1.21.1'
+    modCompileOnly 'com.cinemamod:mcef:2.1.6-1.20.3'
+    modRuntimeOnly 'com.cinemamod:mcef-fabric:2.1.6-1.20.3'
 }
 ```
 See the [mcef-fabric-example-mod](https://github.com/CinemaMod/mcef-fabric-example-mod) for a complete example Fabric project.
@@ -56,8 +56,8 @@ See the [mcef-fabric-example-mod](https://github.com/CinemaMod/mcef-fabric-examp
 #### NeoForge
 ```
 dependencies {
-    compileOnly fg.deobf('com.cinemamod:mcef:2.1.5-1.21.1')
-    runtimeOnly fg.deobf('com.cinemamod:mcef-neoforge:2.1.5-1.21.1')
+    compileOnly fg.deobf('com.cinemamod:mcef:2.1.6-1.20.3')
+    runtimeOnly fg.deobf('com.cinemamod:mcef-neoforge:2.1.6-1.20.3')
 }
 ```
 ### Building & Modifying MCEF
