@@ -31,6 +31,7 @@ import org.cef.handler.CefContextMenuHandler;
 import org.cef.handler.CefDisplayHandler;
 import org.cef.handler.CefLoadHandler;
 import org.cef.misc.CefAudioParameters;
+import org.cef.misc.DataPointer;
 import org.cef.network.CefRequest;
 
 import java.util.ArrayList;
@@ -172,7 +173,7 @@ public class MCEFClient implements CefLoadHandler, CefContextMenuHandler, CefDis
     }
     
     @Override
-    public void onAudioStreamPacket(CefBrowser browser, long data, int frames, long pts) {
+    public void onAudioStreamPacket(CefBrowser browser, DataPointer data, int frames, long pts) {
         for (CefAudioHandler audioHandler : audioHandlers) {
             audioHandler.onAudioStreamPacket(browser, data, frames, pts);
         }
