@@ -172,7 +172,7 @@ public class MCEFClient implements CefLoadHandler, CefContextMenuHandler, CefDis
     }
     
     @Override
-    public void onAudioStreamPacket(CefBrowser browser, float[] data, int frames, long pts) {
+    public void onAudioStreamPacket(CefBrowser browser, long data, int frames, long pts) {
         for (CefAudioHandler audioHandler : audioHandlers) {
             audioHandler.onAudioStreamPacket(browser, data, frames, pts);
         }
