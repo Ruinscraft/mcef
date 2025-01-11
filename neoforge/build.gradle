@@ -1,5 +1,5 @@
 plugins {
-    id 'net.neoforged.gradle.userdev' version '7.0.+'
+    id 'net.neoforged.gradle.userdev' version '7.0.178'
     id 'com.matthewprenger.cursegradle' version "${cursegradle_version}"
     id 'com.github.johnrengelman.shadow' version "${shadow_version}"
     id 'maven-publish'

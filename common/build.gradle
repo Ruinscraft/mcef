@@ -74,9 +74,9 @@ jar {
     from sourceSets.jcef.output.resourcesDir
 }
 
-idea {
-    module {
-        excludeDirs += file("java-cef/java/tests")
-        inheritOutputDirs true
-    }
-}
+//idea {
+//    module {
+//        excludeDirs += file("java-cef/java/tests")
+//        inheritOutputDirs true
+//    }
+//}
