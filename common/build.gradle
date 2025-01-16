@@ -1,6 +1,7 @@
 plugins {
     id 'fabric-loom'
     id 'maven-publish'
+    id 'idea'
 }
 
 sourceCompatibility = JavaLanguageVersion.of(java_version as int)
